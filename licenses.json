@@ -2,8 +2,9 @@
     "eness": { "name": "Enes Deleş", "expiry": "2025-12-31", "dailyLimit": 500000 },
     "cico": { "name": "Kerem Yeniçay", "expiry": "2030-12-29", "dailyLimit": 5000000 },
     "cicoau": { "name": "Kerem Yeniçay", "expiry": "2030-12-29", "dailyLimit": 5000000 },
-    "cikko": { "name": "Süleyman Demircan", "expiry": "2025-12-26", "dailyLimit": 200000 }
+    "cikko": { "name": "Süleyman Demircan", "expiry": "2025-12-28", "dailyLimit": 200000 }
 }
+
 
 
 
