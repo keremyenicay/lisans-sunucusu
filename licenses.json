@@ -5,9 +5,9 @@
         "dailyLimit": 500000,
         "maxDevices": 1 
     },
-    "cico": { 
+    "kerro1": { 
         "name": "Kerem Yeniçay", 
-        "expiry": "2030-12-29", 
+        "expiry": "2031-12-29", 
         "dailyLimit": 5000000, 
         "maxDevices": 3 
     },
@@ -18,4 +18,5 @@
         "maxDevices": 1 
     }
 }
+
 
