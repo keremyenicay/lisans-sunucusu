@@ -1,13 +1,26 @@
 {
-    "eness": { "name": "Enes Deleş", "expiry": "2025-12-31", "dailyLimit": 500000 },
-    "cico": { "name": "Kerem Yeniçay", "expiry": "2030-12-29", "dailyLimit": 5000000 },
-    "cicoau": { "name": "Kerem Yeniçay", "expiry": "2030-12-29", "dailyLimit": 5000000 },
-    "cikko": { "name": "Süleyman Demircan", "expiry": "2025-12-28", "dailyLimit": 200000 }
+    "eness": { 
+        "name": "Enes Deleş", 
+        "expiry": "2025-12-31", 
+        "dailyLimit": 500000,
+        "maxDevices": 1 
+    },
+    "cico": { 
+        "name": "Kerem Yeniçay", 
+        "expiry": "2030-12-29", 
+        "dailyLimit": 5000000, 
+        "maxDevices": 3 
+    },
+    "cicoau": { 
+        "name": "Kerem Yeniçay", 
+        "expiry": "2030-12-29", 
+        "dailyLimit": 5000000, 
+        "maxDevices": 3 
+    },
+    "cikko": { 
+        "name": "Süleyman Demircan", 
+        "expiry": "2025-12-28", 
+        "dailyLimit": 200000, 
+        "maxDevices": 1 
+    }
 }
-
-
-
-
-
-
-
