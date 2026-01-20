@@ -16,8 +16,15 @@
         "expiry": "2025-12-28", 
         "dailyLimit": 200000, 
         "maxDevices": 1 
+    },
+    "1deneme1": { 
+        "name": "Cihat Göktaş", 
+        "expiry": "2026-01-21", 
+        "dailyLimit": 100000, 
+        "maxDevices": 1 
     }
 }
+
 
 
 
