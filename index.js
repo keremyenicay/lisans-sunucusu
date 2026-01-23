@@ -80,7 +80,8 @@ app.post('/api/validate-license', (req, res) => {
             success: true,
             name: licenseInfo.name,
             expiry: licenseInfo.expiry,
-            dailyLimit: licenseInfo.dailyLimit
+            dailyLimit: licenseInfo.dailyLimit,
+            plan: licenseInfo.plan || 'standard' // <--- BU SATIRI EKLE!
         });
 
     } catch (error) {
@@ -92,3 +93,4 @@ app.post('/api/validate-license', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Lisans sunucusu http://localhost:${PORT} adresinde çalışıyor`);
 });
+
