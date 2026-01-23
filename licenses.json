@@ -3,31 +3,32 @@
         "name": "Enes Deleş", 
         "expiry": "2026-12-31", 
         "dailyLimit": 500000,
-        "maxDevices": 1
+        "maxDevices": 1,
         "plan": "premium"
     },
     "kerro1": { 
         "name": "Kerem Yeniçay", 
         "expiry": "2031-12-29", 
         "dailyLimit": 5000000, 
-        "maxDevices": 3
+        "maxDevices": 3,
         "plan": "premium"
     },
     "cikko": { 
         "name": "Süleyman Demircan", 
         "expiry": "2025-12-28", 
         "dailyLimit": 200000, 
-        "maxDevices": 1
+        "maxDevices": 1,
         "plan": "premium"
     },
     "1deneme1": { 
         "name": "Cihat Göktaş", 
         "expiry": "2026-01-24", 
         "dailyLimit": 100000, 
-        "maxDevices": 1
+        "maxDevices": 1,
         "plan": "standard"
     }
 }
+
 
 
 
