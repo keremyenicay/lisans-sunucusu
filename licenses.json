@@ -19,11 +19,12 @@
     },
     "1deneme1": { 
         "name": "Cihat Göktaş", 
-        "expiry": "2026-01-21", 
+        "expiry": "2026-01-24", 
         "dailyLimit": 100000, 
         "maxDevices": 1 
     }
 }
+
 
 
 
