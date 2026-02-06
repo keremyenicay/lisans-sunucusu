@@ -2,7 +2,7 @@
     "eness": { 
         "name": "Enes Deleş", 
         "expiry": "2026-12-31", 
-        "dailyLimit": 500000,
+        "dailyLimit": 2000000,
         "maxDevices": 1,
         "plan": "premium"
     },
@@ -28,6 +28,7 @@
         "plan": "standard"
     }
 }
+
 
 
 
