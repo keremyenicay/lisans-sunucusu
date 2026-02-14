@@ -20,14 +20,15 @@
         "maxDevices": 1,
         "plan": "premium"
     },
-    "1deneme1": { 
-        "name": "Cihat Göktaş", 
-        "expiry": "2026-01-24", 
+    "efffe": { 
+        "name": "Efe Cömert", 
+        "expiry": "2026-02-16", 
         "dailyLimit": 100000, 
         "maxDevices": 1,
-        "plan": "standard"
+        "plan": "premium"
     }
 }
+
 
 
 
