@@ -20,7 +20,7 @@
         "maxDevices": 1,
         "plan": "premium"
     },
-    "efffe": { 
+    "effe": { 
         "name": "Efe Cömert", 
         "expiry": "2026-02-16", 
         "dailyLimit": 100000, 
@@ -28,6 +28,7 @@
         "plan": "premium"
     }
 }
+
 
 
 
