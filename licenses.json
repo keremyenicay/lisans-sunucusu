@@ -8,7 +8,7 @@
     },
     "kerro1": { 
         "name": "Kerem Yeniçay", 
-        "expiry": "2031-12-29", 
+        "expiry": "2032-12-29", 
         "dailyLimit": 5000000, 
         "maxDevices": 3,
         "plan": "premium"
@@ -28,6 +28,7 @@
         "plan": "standard"
     }
 }
+
 
 
 
