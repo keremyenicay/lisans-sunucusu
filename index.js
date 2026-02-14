@@ -1,96 +1,72 @@
-// Gerekli kütüphaneleri import ediyoruz.
 const express = require('express');
-const cors = require('cors'); 
-const fs = require('fs');     
-
-// Express uygulamasını oluşturuyoruz.
+const cors = require('cors');
+const axios = require('axios'); // Bunu kurman gerek: npm install axios
 const app = express();
-const PORT = process.env.PORT || 3000; 
 
-// Gelen JSON verilerini okuyabilmek için middleware'ler.
 app.use(cors());
 app.use(express.json());
 
-// Veritabanı dosyalarımızın yolları
-const LICENSES_DB_PATH = './licenses.json';
-const ACTIVATIONS_DB_PATH = './activations.json';
+// Sabit Lisanslar (Veritabanı kullanmıyorsan)
+const licenses = {
+    "kerro1": { active: true, hwid: null }, // İlk girişte HWID kilitlenir
+    "deneme1": { active: true, hwid: null }
+};
 
-// --- VARSAYILAN AYAR: Lisansta maxDevices belirtilmeyenler için geçerli olacak limit ---
-const DEFAULT_MAX_DEVICES = 3; 
+// GITHUB AYARLARI
+const GITHUB_REPO = "keremyenicay/asin-alici"; // KullanıcıAdı/RepoAdı
+const GITHUB_FILE_PATH = "main.js"; // Dosya yolu
+// Render'da Environment Variable olarak "GITHUB_TOKEN" eklemelisin!
+// Veya test için buraya 'ghp_...' şeklinde yazabilirsin (ÖNERİLMEZ).
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN; 
 
-// Ana API endpoint'imiz: Lisans doğrulama
-app.post('/api/validate-license', (req, res) => {
+app.post('/api/get-extension', async (req, res) => {
+    const { key, machineId } = req.body;
+
+    // 1. LİSANS KONTROLÜ
+    if (!licenses[key]) {
+        return res.status(401).json({ error: "Geçersiz Lisans Anahtarı" });
+    }
+
+    const licenseData = licenses[key];
+
+    // HWID (Makine ID) Kilitleme Mantığı
+    if (licenseData.hwid === null) {
+        licenseData.hwid = machineId; // İlk girişte kilitle
+    } else if (licenseData.hwid !== machineId) {
+        return res.status(403).json({ error: "Bu lisans başka bir bilgisayarda kullanılıyor!" });
+    }
+
+    // Lisans Pasif mi?
+    if (!licenseData.active) {
+        return res.status(403).json({ error: "Lisans süresi dolmuş." });
+    }
+
+    // 2. GITHUB'DAN KODU ÇEK (Kullanıcı Görmez)
     try {
-        const { key, machineId } = req.body;
+        const githubResponse = await axios.get(
+            `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`,
+            {
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`,
+                    'Accept': 'application/vnd.github.v3.raw' // RAW formatta (direkt kod) iste
+                }
+            }
+        );
 
-        if (!key || !machineId) {
-            return res.status(400).json({ success: false, error: 'Lisans anahtarı veya makine ID eksik.' });
-        }
+        const protectedCode = githubResponse.data;
 
-        // Dosyalardan verileri oku
-        const licenses = JSON.parse(fs.readFileSync(LICENSES_DB_PATH, 'utf8'));
-        const activations = JSON.parse(fs.readFileSync(ACTIVATIONS_DB_PATH, 'utf8'));
-        const licenseInfo = licenses[key];
-
-        // 1. Lisansın varlığını kontrol et.
-        if (!licenseInfo) {
-            return res.status(404).json({ success: false, error: 'Lisans anahtarı geçersiz.' });
-        }
-
-        // 2. Lisans süresinin dolup dolmadığını kontrol et.
-        const now = new Date();
-        const expiryDate = new Date(licenseInfo.expiry);
-        if (now > expiryDate) {
-            return res.status(403).json({ success: false, error: 'Lisans süreniz dolmuştur.' });
-        }
-        
-        // --- ÖZEL LİMİTİ BELİRLEME ---
-        // Lisansta 'maxDevices' belirtilmişse onu kullan, yoksa varsayılanı kullan.
-        const currentMaxDevices = licenseInfo.maxDevices || DEFAULT_MAX_DEVICES; 
-
-        // activations[key] artık bir machineId dizisi (array) tutacak. 
-        let existingActivations = activations[key] || []; 
-        if (typeof existingActivations === 'string') {
-             // Eski tekli string yapısındaysa, diziye çevir.
-             existingActivations = [existingActivations];
-        }
-
-        // Gelen machineId'nin zaten aktif edilmiş cihazlar arasında olup olmadığını kontrol et.
-        const isAlreadyActive = existingActivations.includes(machineId); 
-
-        // Eğer bu machineId listede yoksa VE Lisanstaki limit aşıldıysa, hata döndür.
-        if (!isAlreadyActive && existingActivations.length >= currentMaxDevices) {
-            return res.status(409).json({ 
-                success: false, 
-                error: `Bu lisans zaten maksimum (${currentMaxDevices}) farklı cihazda/tarayıcıda kullanılıyor.` 
-            });
-        }
-
-        // Eğer bu machineId listede yoksa, yeni cihazı kaydet.
-        if (!isAlreadyActive) {
-            // Yeni aktivasyon: Bu machineId'yi listeye ekle.
-            existingActivations.push(machineId);
-            activations[key] = existingActivations;
-            fs.writeFileSync(ACTIVATIONS_DB_PATH, JSON.stringify(activations, null, 2));
-            console.log(`Yeni aktivasyon (Cihaz ${existingActivations.length}/${currentMaxDevices}): ${key} -> ${machineId}`);
-        }
-        
-        // Her şey yolundaysa, başarı mesajı ve lisans bilgilerini döndür.
+        // 3. KODU KULLANICIYA GÖNDER
+        // Kodu JSON içinde gönderiyoruz ki doğrudan script tag ile çağrılamasın.
         res.json({
             success: true,
-            name: licenseInfo.name,
-            expiry: licenseInfo.expiry,
-            dailyLimit: licenseInfo.dailyLimit,
-            plan: licenseInfo.plan || 'standard' // <--- BU SATIRI EKLE!
+            payload: protectedCode 
         });
 
     } catch (error) {
-        console.error('Doğrulama hatası:', error);
-        res.status(500).json({ success: false, error: 'Sunucu tarafında doğrulama hatası oluştu.' });
+        console.error("GitHub Hatası:", error.message);
+        res.status(500).json({ error: "Sunucu hatası: Kod alınamadı." });
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Lisans sunucusu http://localhost:${PORT} adresinde çalışıyor`);
-});
-
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Sunucu ${PORT} portunda çalışıyor`));
