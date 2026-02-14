@@ -1,5 +1,5 @@
 {
-    "eness": { 
+    "enesss": { 
         "name": "Enes Deleş", 
         "expiry": "2026-12-31", 
         "dailyLimit": 2000000,
@@ -28,6 +28,7 @@
         "plan": "premium"
     }
 }
+
 
 
 
