@@ -15,7 +15,7 @@
     },
     "cikko": { 
         "name": "Süleyman Demircan", 
-        "expiry": "2025-12-28", 
+        "expiry": "2026-03-27", 
         "dailyLimit": 200000, 
         "maxDevices": 1,
         "plan": "premium"
@@ -28,6 +28,7 @@
         "plan": "premium"
     }
 }
+
 
 
 
