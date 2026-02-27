@@ -6,7 +6,7 @@
         "maxDevices": 1,
         "plan": "premium"
     },
-    "kerro1": { 
+    "kerreyo": { 
         "name": "Kerem Yeniçay", 
         "expiry": "2032-12-29", 
         "dailyLimit": 5000000, 
@@ -28,6 +28,7 @@
         "plan": "premium"
     }
 }
+
 
 
 
