@@ -100,5 +100,53 @@ app.post('/api/get-extension', async (req, res) => {
     }
 });
 
+// --- AMAZON SP-API VARYASYON KONTROLÜ ---
+async function getAmazonAccessToken() {
+    try {
+        const response = await axios.post('https://api.amazon.com/auth/o2/token', {
+            grant_type: 'refresh_token',
+            refresh_token: process.env.REFRESH_TOKEN,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        });
+        return response.data.access_token;
+    } catch (error) {
+        console.error("Amazon Token Hatası:", error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+app.get('/api/check-variation/:asin', async (req, res) => {
+    const asin = req.params.asin;
+    
+    try {
+        const accessToken = await getAmazonAccessToken();
+        
+        // Amazon Avustralya (FE Region) ve Marketplace ID (A39IBJ37TRP1C6)
+        const amazonApiUrl = `https://sellingpartnerapi-fe.amazon.com/catalog/2022-04-01/items/${asin}?marketplaceIds=A39IBJ37TRP1C6&includedData=relationships`;
+
+        const catalogResponse = await axios.get(amazonApiUrl, {
+            headers: { 'x-amz-access-token': accessToken }
+        });
+
+        const itemData = catalogResponse.data;
+        let hasVariation = false;
+
+        if (itemData.relationships && itemData.relationships.length > 0) {
+            const variationData = itemData.relationships.find(
+                rel => rel.type === 'VARIATION_PARENT' || rel.type === 'VARIATION_CHILD'
+            );
+            if (variationData) hasVariation = true;
+        }
+
+        res.json({ success: true, asin: asin, hasVariation: hasVariation });
+
+    } catch (error) {
+        console.error(`ASIN ${asin} sorgulanırken hata:`, error.response ? error.response.data : error.message);
+        res.status(500).json({ success: false, message: 'Amazon API Hatası' });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Sunucu ${PORT} portunda çalışıyor`));
+
