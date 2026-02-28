@@ -118,6 +118,7 @@ async function getAmazonAccessToken() {
 
 app.get('/api/check-variation/:asin', async (req, res) => {
     const asin = req.params.asin;
+    console.log(`[YENI ISTEK] Eklenti şu ASIN'i sordu: ${asin}`); // <-- BU SATIRI EKLEYİN
     
     try {
         const accessToken = await getAmazonAccessToken();
@@ -149,4 +150,5 @@ app.get('/api/check-variation/:asin', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Sunucu ${PORT} portunda çalışıyor`));
+
 
