@@ -20,11 +20,11 @@
         "maxDevices": 1,
         "plan": "premium"
     },
-    "effe": { 
-        "name": "Efe Cömert", 
-        "expiry": "2026-02-16", 
-        "dailyLimit": 100000, 
-        "maxDevices": 1,
+    "bahoync": { 
+        "name": "Bahadır Yeniçay", 
+        "expiry": "2030-12-30", 
+        "dailyLimit": 5000000, 
+        "maxDevices": 3,
         "plan": "premium"
     }
 }
