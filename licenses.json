@@ -10,7 +10,7 @@
         "name": "Kerem Yeniçay", 
         "expiry": "2032-12-29", 
         "dailyLimit": 5000000, 
-        "maxDevices": 3,
+        "maxDevices": 5,
         "plan": "premium"
     },
     "cikko": { 
