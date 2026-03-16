@@ -26,6 +26,13 @@
         "dailyLimit": 5000000, 
         "maxDevices": 3,
         "plan": "premium"
+    },
+    "krm123": { 
+        "name": "Kerro Yeniçay", 
+        "expiry": "2030-12-30", 
+        "dailyLimit": 50000000, 
+        "maxDevices": 3,
+        "plan": "premium"
     }
 }
 
